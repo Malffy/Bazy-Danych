@@ -1,8 +1,8 @@
-Switch to a database.					use [db name];
+Switch to a database.			use [db name];
 List all databases on the sql server.	show databases;
-To see all the tables in the db.		show tables;
-Show all data in a table.				SELECT * FROM [table name];
-To see database's field formats.		describe [table name];
+To see all the tables in the db.	show tables;
+Show all data in a table.		SELECT * FROM [table name];
+To see database's field formats.	describe [table name];
 
 Zadanie 5;
 1.INSERT INTO postac...;
@@ -12,7 +12,7 @@ Zadanie 5;
 5.UPDATE postac SET funkcja='kapitan' WHERE ..; 
 6.a) ALTER tABLE postac ADD COLUMN statek..;
 b) ALTER TABLE postac ADD FOREIGN KEY(statek)...;
-#trzeba zwróciæ uwagê na atrybut NOT NULL
+#trzeba zwrÃ³ciÃ¦ uwagÃª na atrybut NOT NULL
 7. UPDATE postac
 8. DELETE FROM izba WHERE...;
 9.DROP TABLE izba;
