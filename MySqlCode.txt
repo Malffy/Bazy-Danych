@@ -75,4 +75,94 @@ id_wlasciciela int);
 
 		#z jakiej tabeli		#kolumna z tabeli (<--)		#odwolanie do tabeli i kolumna z niej
 ALTER TABLE walizka ADD FOREIGN KEY(id_wlasciciela) REFERENCES postac(id_postaci) ON DELETE CASCADE;
-UPDATE kolor SET default(rozowy);
+
++----------------+---------------------------------------------+------+-----+---------+----------------+
+| Field          | Type                                        | Null | Key | Default | Extra          |
++----------------+---------------------------------------------+------+-----+---------+----------------+
+| id_walizki     | int                                         | NO   | PRI | NULL    | auto_increment |
+| pojemnosc      | int unsigned                                | YES  |     | NULL    |                |
+| kolor          | enum('rozowy','czerwony','teczowy','zolty') | YES  |     | NULL    |                |
+| id_wlasciciela | int                                         | YES  | MUL | NULL    |                |
++----------------+---------------------------------------------+------+-----+---------+----------------+
+
+ALTER TABLE walizka ALTER kolor SET default 'rozowy';
+
++----------------+---------------------------------------------+------+-----+---------+----------------+
+| Field          | Type                                        | Null | Key | Default | Extra          |
++----------------+---------------------------------------------+------+-----+---------+----------------+
+| id_walizki     | int                                         | NO   | PRI | NULL    | auto_increment |
+| pojemnosc      | int unsigned                                | YES  |     | NULL    |                |
+| kolor          | enum('rozowy','czerwony','teczowy','zolty') | YES  |     | rozowy  |                |
+| id_wlasciciela | int                                         | YES  | MUL | NULL    |                |
++----------------+---------------------------------------------+------+-----+---------+----------------+
+
+INSERT INTO walizka VALUES 
+(default,10,default,1),
+(default,20,'czerwony',3);
+
++------------+-----------+----------+----------------+
+| id_walizki | pojemnosc | kolor    | id_wlasciciela |
++------------+-----------+----------+----------------+
+|          1 |        10 | rozowy   |              1 |
+|          2 |        20 | czerwony |              3 |
++------------+-----------+----------+----------------+
+
+
+ZADANIE 3
+
+CREATE TABLE izba(adres_budynku VARCHAR(50) NOT NULL,
+ nazwa_izby VARCHAR(50) NOT NULL,
+ PRIMARY KEY (adres_budynku,nazwa_izby),
+ metraz int unsigned,
+ wlasciciel int,
+ FOREIGN KEY(wlasciciel) REFERENCES walizka(id_wlasciciela) ON DELETE SET NULL);
+ 
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| adres_budynku | varchar(50)  | NO   | PRI | NULL    |       |
+| nazwa_izby    | varchar(50)  | NO   | PRI | NULL    |       |
+| metraz        | int unsigned | YES  |     | NULL    |       |
+| wlasciciel    | int          | YES  | MUL | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+
+ALTER TABLE izba ADD COLUMN kolor_izby varchar(50) AFTER metraz;
+
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| adres_budynku | varchar(50)  | NO   | PRI | NULL    |       |
+| nazwa_izby    | varchar(50)  | NO   | PRI | NULL    |       |
+| metraz        | int unsigned | YES  |     | NULL    |       |
+| kolor_izby    | varchar(50)  | YES  |     | NULL    |       |
+| wlasciciel    | int          | YES  | MUL | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+
+INSERT INTO izba VALUES ('Odynow Wielkich 9','spizarnia',300,'poconacotokomuniewiempocotoowy',1);
++-------------------+------------+--------+--------------------------------+------------+
+| adres_budynku     | nazwa_izby | metraz | kolor_izby                     | wlasciciel |
++-------------------+------------+--------+--------------------------------+------------+
+| Odynow Wielkich 9 | spizarnia  |    300 | poconacotokomuniewiempocotoowy |          1 |
++-------------------+------------+--------+--------------------------------+------------+
+
+ZADANIE 4
+
+CREATE TABLE przetwory (id_przetworu int PRIMARY KEY NOT NULL,
+rok_produkcji SMALLINT DEFAULT '1654',
+id_wykonawcy int ,
+zawartosc VARCHAR(50),
+dodatek VARCHAR(50) DEFAULT 'papryczka chilli',
+id_konsumenta int,
+FOREIGN KEY(id_wykonawcy) REFERENCES postac(id_postaci),
+FOREIGN KEY(id_konsumenta) REFERENCES postac(id_postaci) );
+
++---------------+-------------+------+-----+------------------+-------+
+| Field         | Type        | Null | Key | Default          | Extra |
++---------------+-------------+------+-----+------------------+-------+
+| id_przetworu  | int         | NO   | PRI | NULL             |       |
+| rok_produkcji | smallint    | YES  |     | 1654             |       |
+| id_wykonawcy  | int         | YES  | MUL | NULL             |       |
+| zawartosc     | varchar(50) | YES  |     | NULL             |       |
+| dodatek       | varchar(50) | YES  |     | papryczka chilli |       |
+| id_konsumenta | int         | YES  | MUL | NULL             |       |
++---------------+-------------+------+-----+------------------+-------+
