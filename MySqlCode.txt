@@ -24,15 +24,15 @@ nazwa varchar(40) NOT NULL,
 rodzaj ENUM('wiking','ptak','kobieta'),
 data_ur DATE,
 wiek Int Unsigned);
-+------------+---------------------------------+------+-----+---------+---------                        -------+
-| Field      | Type                            | Null | Key | Default | Extra                                  |
-+------------+---------------------------------+------+-----+---------+---------                        -------+
-| id_postaci | int                             | NO   | PRI | NULL    | auto_inc                        rement |
-| nazwa      | varchar(40)                     | NO   |     | NULL    |                                        |
-| rodzaj     | enum('wiking','ptak','kobieta') | YES  |     | NULL    |                                        |
-| data_ur    | date                            | YES  |     | NULL    |                                        |
-| wiek       | int unsigned                    | YES  |     | NULL    |                                        |
-+------------+---------------------------------+------+-----+---------+---------
++------------+---------------------------------+------+-----+---------+----------------+
+| Field      | Type                            | Null | Key | Default | Extra          |
++------------+---------------------------------+------+-----+---------+----------------+
+| id_postaci | int                             | NO   | PRI | NULL    | auto_increment |
+| nazwa      | varchar(40)                     | NO   |     | NULL    |                |
+| rodzaj     | enum('wiking','ptak','kobieta') | YES  |     | NULL    |                |
+| data_ur    | date                            | YES  |     | NULL    |                |
+| wiek       | int unsigned                    | YES  |     | NULL    |                |
++------------+---------------------------------+------+-----+---------+----------------+
 
 INSERT INTO postac VALUES 
 (default,'Bjorn','wiking','1998-06-06',23),
