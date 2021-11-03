@@ -166,3 +166,72 @@ FOREIGN KEY(id_konsumenta) REFERENCES postac(id_postaci) );
 | dodatek       | varchar(50) | YES  |     | papryczka chilli |       |
 | id_konsumenta | int         | YES  | MUL | NULL             |       |
 +---------------+-------------+------+-----+------------------+-------+
+
+
+INSERT INTO przetwory VALUES(default,default,1,'kapusta woda przyprawy',default,3)
+
+INSERT INTO postac VALUES(default,'Odyn','wiking','1997-06-06',24),
+(default,'Thor','wiking','1996-08-16',25),
+(default,'Loki','wiking','1995-01-18',26),
+(default,'Grzmot','wiking','1994-02-26',27),
+(default,'Piorun','wiking','1993-07-16',28);
+
++------------+----------+---------+------------+------+
+| id_postaci | nazwa    | rodzaj  | data_ur    | wiek |
++------------+----------+---------+------------+------+
+|          1 | Bjorn    | wiking  | 1998-06-06 |   23 |
+|          2 | Drozd    | ptak    | 2020-10-27 |    1 |
+|          3 | Tesciowa | kobieta | 1965-09-03 |   88 |
+|          4 | Odyn     | wiking  | 1997-06-06 |   24 |
+|          5 | Thor     | wiking  | 1996-08-16 |   25 |
+|          6 | Loki     | wiking  | 1995-01-18 |   26 |
+|          7 | Grzmot   | wiking  | 1994-02-26 |   27 |
+|          8 | Piorun   | wiking  | 1993-07-16 |   28 |
++------------+----------+---------+------------+------+
+
+CREATE TABLE statek(nazwa_statku VARCHAR(50) PRIMARY KEY,
+rodzaj_statku ENUM('sneki','skeidy','drakary'),
+data_wodowania DATE,
+max_ladownosc int Unsigned);
+
++----------------+----------------------------------+------+-----+---------+-------+
+| Field          | Type                             | Null | Key | Default | Extra |
++----------------+----------------------------------+------+-----+---------+-------+
+| nazwa_statku   | varchar(50)                      | NO   | PRI | NULL    |       |
+| rodzaj_statku  | enum('sneki','skeidy','drakary') | YES  |     | NULL    |       |
+| data_wodowania | date                             | YES  |     | NULL    |       |
+| max_ladownosc  | int unsigned                     | YES  |     | NULL    |       |
++----------------+----------------------------------+------+-----+---------+-------+
+
+INSERT INTO statek VALUES('Pomarancza','sneki','2021-10-03',300),
+('Cytryna','skeidy','2021-10-04',500);
+
++--------------+---------------+----------------+---------------+
+| nazwa_statku | rodzaj_statku | data_wodowania | max_ladownosc |
++--------------+---------------+----------------+---------------+
+| Cytryna      | skeidy        | 2021-10-04     |           500 |
+| Pomarancza   | sneki         | 2021-10-03     |           300 |
++--------------+---------------+----------------+---------------+
+
+ALTER TABLE postac ADD COLUMN funkcja VARCHAR(50);
+ALTER TABLE postac ALTER funckja SET DEFAULT 'pirat';
+UPDATE postac SET funkcja=default;
+UPDATE postac SET funkcja='kapitan' WHERE id_postaci=1;
+UPDATE postac SET funkcja='papuga kapitana' WHERE id_postaci=2;
+
+
++------------+----------+---------+------------+------+-----------------+
+| id_postaci | nazwa    | rodzaj  | data_ur    | wiek | funkcja         |
++------------+----------+---------+------------+------+-----------------+
+|          1 | Bjorn    | wiking  | 1998-06-06 |   23 | kapitan         |
+|          2 | Drozd    | ptak    | 2020-10-27 |    1 | papuga kapitana |
+|          3 | Tesciowa | kobieta | 1965-09-03 |   88 | pirat           |
+|          4 | Odyn     | wiking  | 1997-06-06 |   24 | pirat           |
+|          5 | Thor     | wiking  | 1996-08-16 |   25 | pirat           |
+|          6 | Loki     | wiking  | 1995-01-18 |   26 | pirat           |
+|          7 | Grzmot   | wiking  | 1994-02-26 |   27 | pirat           |
+|          8 | Piorun   | wiking  | 1993-07-16 |   28 | pirat           |
++------------+----------+---------+------------+------+-----------------+
+
+ALTER TABLE postac ADD COLUMN statek varchar(50) NOT NULL;
+ALTER TABLE postac ADD FOREIGN KEY(statek) REFERENCES statek(nazwa_statku);
