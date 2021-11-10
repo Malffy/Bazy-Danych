@@ -249,5 +249,14 @@ Delete table izba;
 LAB 02
 
 ZADANIE 1
-a) DELETE FROM postac WHERE rodzaj='wiking' AND nazwa<>'Bjorn' ORDER BY data_ur ASC LIMIT 2;
-b)ALTER TABLE postac DROP Primary key;
+a)DELETE FROM postac WHERE rodzaj='wiking' AND nazwa<>'Bjorn' ORDER BY data_ur ASC LIMIT 2;
+b)ALTER TABLE postac Drop PRIMARY Key;
+
+ZADANIE 2
+a) Alter table add column pesel int (11) Primary key ;
+b) alter table postac modify rodzaj enum('wiking','ptak','kobieta','syrena');
+c)Insert into postac Values (default,Gertruda Nieszczera,'syrena',1970-03-03,syrena,null)
+
+ZADANIE 3
+
+a) UPdate postac where nazwa LIKE "%a%"
