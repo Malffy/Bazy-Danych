@@ -4,18 +4,7 @@ To see all the tables in the db.	show tables;
 Show all data in a table.		SELECT * FROM [table name];
 To see database's field formats.	describe [table name];
 
-Zadanie 5;
-1.INSERT INTO postac...;
-2.Create Table ..;
-3.Insert into statek...;
-4.5ALTER TABLE postac ADD COLUMN tak jak create table;
-5.UPDATE postac SET funkcja='kapitan' WHERE ..; 
-6.a) ALTER tABLE postac ADD COLUMN statek..;
-b) ALTER TABLE postac ADD FOREIGN KEY(statek)...;
-#trzeba zwróciæ uwagê na atrybut NOT NULL
-7. UPDATE postac
-8. DELETE FROM izba WHERE...;
-9.DROP TABLE izba;
+LAB01
 
 ZADANIE 1
 
@@ -233,5 +222,32 @@ UPDATE postac SET funkcja='papuga kapitana' WHERE id_postaci=2;
 |          8 | Piorun   | wiking  | 1993-07-16 |   28 | pirat           |
 +------------+----------+---------+------------+------+-----------------+
 
-ALTER TABLE postac ADD COLUMN statek varchar(50) NOT NULL;
+ALTER TABLE postac ADD COLUMN statek varchar(50);
 ALTER TABLE postac ADD FOREIGN KEY(statek) REFERENCES statek(nazwa_statku);
+
+Update postac set funckja=null where nazwa="Tesciowa";
+Update postac set statek="Cytryna" where rodzaj='wiking';
+Update postac set statek="Pomarancza" where rodzaj='ptak';
+Update postac set statek="Pomarancza" where nazwa='Bjorn';
+
++------------+----------+---------+------------+------+-----------------+------------+
+| id_postaci | nazwa    | rodzaj  | data_ur    | wiek | funkcja         | statek     |
++------------+----------+---------+------------+------+-----------------+------------+
+|          1 | Bjorn    | wiking  | 1998-06-06 |   23 | kapitan         | Pomarancza |
+|          2 | Drozd    | ptak    | 2020-10-27 |    1 | papuga kapitana | Pomarancza |
+|          3 | Tesciowa | kobieta | 1965-09-03 |   88 | NULL            | NULL       |
+|          4 | Odyn     | wiking  | 1997-06-06 |   24 | pirat           | Cytryna    |
+|          5 | Thor     | wiking  | 1996-08-16 |   25 | pirat           | Cytryna    |
+|          6 | Loki     | wiking  | 1995-01-18 |   26 | pirat           | Cytryna    |
+|          7 | Grzmot   | wiking  | 1994-02-26 |   27 | pirat           | Cytryna    |
+|          8 | Piorun   | wiking  | 1993-07-16 |   28 | pirat           | Cytryna    |
++------------+----------+---------+------------+------+-----------------+------------+
+
+Delete from izba where nazwa_izby="spizarnia";
+Delete table izba;
+
+LAB 02
+
+ZADANIE 1
+a) DELETE FROM postac WHERE rodzaj='wiking' AND nazwa<>'Bjorn' ORDER BY data_ur ASC LIMIT 2;
+b)ALTER TABLE postac DROP Primary key;
