@@ -1,262 +1,90 @@
-Switch to a database.			use [db name];
-List all databases on the sql server.	show databases;
-To see all the tables in the db.	show tables;
-Show all data in a table.		SELECT * FROM [table name];
-To see database's field formats.	describe [table name];
+LAB 1
 
-LAB01
+Zadanie 1
+1)Create table postac(id_postaci int primary key auto_increment,nazwa varchar(40),rodzaj enum('wiking','ptak','kobieta'),data_ur date,wiek int unsigned);
+2)Insert into postac values(default,'Bjorn','wiking','1787-09-03',45),
+(default,'Tesciowa','kobieta','1747-09-03',80),
+(default,'Drozd','ptak','1797-09-03',12);
+3)Update postac set wiek='88' where nazwa='Tesciowa';
 
-ZADANIE 1
+Zadanie 2
+1)Create table walizka(id_walizki int auto_increment primary key,pojemnosc int unsigned,kolor enum('czerwony','teczowy','zolty','rozowy'), id_wlasciciela int);
+Alter table walizka add foreign key (id_wlasciciela) references postac(id_postaci);
+2)Alter table walizka alter kolor set default'rozowy';
+3)Insert into walizka values(default,30,'czerwony',1),
+(default,'40','rozowy',2);
 
-create table postac ( id_postaci INT AUTO_INCREMENT PRIMARY KEY,
-nazwa varchar(40) NOT NULL,
-rodzaj ENUM('wiking','ptak','kobieta'),
-data_ur DATE,
-wiek Int Unsigned);
-+------------+---------------------------------+------+-----+---------+----------------+
-| Field      | Type                            | Null | Key | Default | Extra          |
-+------------+---------------------------------+------+-----+---------+----------------+
-| id_postaci | int                             | NO   | PRI | NULL    | auto_increment |
-| nazwa      | varchar(40)                     | NO   |     | NULL    |                |
-| rodzaj     | enum('wiking','ptak','kobieta') | YES  |     | NULL    |                |
-| data_ur    | date                            | YES  |     | NULL    |                |
-| wiek       | int unsigned                    | YES  |     | NULL    |                |
-+------------+---------------------------------+------+-----+---------+----------------+
+Zadanie 3
+1.Create table izba(adres_budynku varchar(40),nazwa_izby varchar(40),metraz int unsigned,wlasciciel int);
+alter table izba add primary key(adres_budynku,nazwa_izby);
+alter table izba add foreign key(wlasciciel) references postac(id_postaci) on delete set null;
+2.alter table izba add column kolor_izby varchar(40) after metraz;
+alter table izba alter kolor_izby set default 'czarny';
+3.Insert into izba values('Dybowskiego 13','spizarnia','100',default,1);
 
-INSERT INTO postac VALUES 
-(default,'Bjorn','wiking','1998-06-06',23),
-(default,'Drozd','ptak','2020-10-27',1),
-(default,'Tesciowa','kobieta','1965-09-03',56);
+Zadanie 4
+1.create table przetwory(id_przetowru int primary key,rok_produkcji int default'1654',id_wykonawcy int ,zawartosc varchar(40),dodatek varchar(40) default 'papryczka chilli', id_konsumenta int, foreign key (id_wykonawcy) references postac(id_postaci),foreign key (id_konsumenta) references postac(id_postaci));
+2.Insert into przetwory values(1,default,1,'mieso woda warzywa jezynka',default,1);
 
-+------------+----------+---------+------------+------+
-| id_postaci | nazwa    | rodzaj  | data_ur    | wiek |
-+------------+----------+---------+------------+------+
-|          1 | Bjorn    | wiking  | 1998-06-06 |   23 |
-|          2 | Drozd    | ptak    | 2020-10-27 |    1 |
-|          3 | Tesciowa | kobieta | 1965-09-03 |   56 |
-+------------+----------+---------+------------+------+
+Zadanie 5
+1.INSERT INTO postac VALUES(default,'Odyn','wiking','1769-06-06',40),
+(default,'Thor','wiking','1770-08-16',50),
+(default,'Loki','wiking','1771-01-18',49),
+(default,'Grzmot','wiking','1779-02-26',43),
+(default,'Piorun','wiking','1776-07-16',48);
+2.Create table statek(nazwa_statku varchar(40) primary key,rodzaj_statku enum('major','orbit'),data_wodowania Date,max_ladownosc int unsigned);\
+3.Insert into statek values('pomarancza','major','1833-03-09',100),
+('cytryna','orbit','1833-03-09',200);
+4.Alter table postac add column funkcja varchar(50) after wiek;
+5.Update postac set funkcja='kapitan' where id_postaci=1;
+6.Alter table postac add column statek varchar(40) after funkcja;
+Alter table postac add foreign key (statek) references statek(nazwa_statku);
+7.Update postac set statek='pomarancza' where rodzaj='wiking' or rodzaj='ptak';
+Update postac set statek="cytryna" where id_postaci=4 or id_postaci=5 or id_postaci=6 or id_postaci=7 or id_postaci=8;
+8.Delete from izba spizarnia;
+9.Drop table izba;
 
-UPDATE postac SET wiek=88 WHERE nazwa='Tesciowa';
+LAB 2
 
-+------------+----------+---------+------------+------+
-| id_postaci | nazwa    | rodzaj  | data_ur    | wiek |
-+------------+----------+---------+------------+------+
-|          1 | Bjorn    | wiking  | 1998-06-06 |   23 |
-|          2 | Drozd    | ptak    | 2020-10-27 |    1 |
-|          3 | Tesciowa | kobieta | 1965-09-03 |   88 |
-+------------+----------+---------+------------+------+
-
-ZADANIE 2
-
-CREATE TABLE walizka(id_walizki INT AUTO_INCREMENT PRIMARY KEY,
-pojemnosc int unsigned,
-kolor ENUM('rozowy','czerwony','teczowy','zolty'), 
-id_wlasciciela int);
-
-+----------------+---------------------------------------------+------+-----+---------+----------------+
-| Field          | Type                                        | Null | Key | Default | Extra          |
-+----------------+---------------------------------------------+------+-----+---------+----------------+
-| id_walizki     | int                                         | NO   | PRI | NULL    | auto_increment |
-| pojemnosc      | int unsigned                                | YES  |     | NULL    |                |
-| kolor          | enum('rozowy','czerwony','teczowy','zolty') | YES  |     | NULL    |                |
-| id_wlasciciela | int                                         | YES  |     | NULL    |                |
-+----------------+---------------------------------------------+------+-----+---------+----------------+
-
-		#z jakiej tabeli		#kolumna z tabeli (<--)		#odwolanie do tabeli i kolumna z niej
-ALTER TABLE walizka ADD FOREIGN KEY(id_wlasciciela) REFERENCES postac(id_postaci) ON DELETE CASCADE;
-
-+----------------+---------------------------------------------+------+-----+---------+----------------+
-| Field          | Type                                        | Null | Key | Default | Extra          |
-+----------------+---------------------------------------------+------+-----+---------+----------------+
-| id_walizki     | int                                         | NO   | PRI | NULL    | auto_increment |
-| pojemnosc      | int unsigned                                | YES  |     | NULL    |                |
-| kolor          | enum('rozowy','czerwony','teczowy','zolty') | YES  |     | NULL    |                |
-| id_wlasciciela | int                                         | YES  | MUL | NULL    |                |
-+----------------+---------------------------------------------+------+-----+---------+----------------+
-
-ALTER TABLE walizka ALTER kolor SET default 'rozowy';
-
-+----------------+---------------------------------------------+------+-----+---------+----------------+
-| Field          | Type                                        | Null | Key | Default | Extra          |
-+----------------+---------------------------------------------+------+-----+---------+----------------+
-| id_walizki     | int                                         | NO   | PRI | NULL    | auto_increment |
-| pojemnosc      | int unsigned                                | YES  |     | NULL    |                |
-| kolor          | enum('rozowy','czerwony','teczowy','zolty') | YES  |     | rozowy  |                |
-| id_wlasciciela | int                                         | YES  | MUL | NULL    |                |
-+----------------+---------------------------------------------+------+-----+---------+----------------+
-
-INSERT INTO walizka VALUES 
-(default,10,default,1),
-(default,20,'czerwony',3);
-
-+------------+-----------+----------+----------------+
-| id_walizki | pojemnosc | kolor    | id_wlasciciela |
-+------------+-----------+----------+----------------+
-|          1 |        10 | rozowy   |              1 |
-|          2 |        20 | czerwony |              3 |
-+------------+-----------+----------+----------------+
-
-
-ZADANIE 3
-
-CREATE TABLE izba(adres_budynku VARCHAR(50) NOT NULL,
- nazwa_izby VARCHAR(50) NOT NULL,
- PRIMARY KEY (adres_budynku,nazwa_izby),
- metraz int unsigned,
- wlasciciel int,
- FOREIGN KEY(wlasciciel) REFERENCES walizka(id_wlasciciela) ON DELETE SET NULL);
+Zadanie 1
+a)Delete from postac where nazwa!='Bjorn' and rodzaj='wiking' order by data_ur ASC LIMIT 2;
+b)alter table walizka drop foreign key walizka_ibfk_1;
+ alter table przetwory drop foreign key przetwory_ibfk_1;
+ alter table przetwory drop foreign key przetwory_ibfk_2;
+ alter table statek drop foreign key statek_ibfk_1;
+ alter table postac modify id_postaci int ;
+ alter table postac drop primary key;
  
-+---------------+--------------+------+-----+---------+-------+
-| Field         | Type         | Null | Key | Default | Extra |
-+---------------+--------------+------+-----+---------+-------+
-| adres_budynku | varchar(50)  | NO   | PRI | NULL    |       |
-| nazwa_izby    | varchar(50)  | NO   | PRI | NULL    |       |
-| metraz        | int unsigned | YES  |     | NULL    |       |
-| wlasciciel    | int          | YES  | MUL | NULL    |       |
-+---------------+--------------+------+-----+---------+-------+
+ Zadanie 2
+ a)Alter table postac add column pesel varchar(11);
+ Update postac set pesel='11111111111' where id_postaci=1;
+ Update postac set pesel='11111111112' where id_postaci=2;
+ Update postac set pesel='11111111113' where id_postaci=3;
+ Update postac set pesel='11111111114' where id_postaci=6;
+ Update postac set pesel='11111111115' where id_postaci=7;
+ Update postac set pesel='11111111116' where id_postaci=8;
+ alter table postac modify pesel bigint(11) primary key;
+b)alter table postac modify rodzaj enum('ptak','wiking','kobieta','syrena') default null;
+c)Insert into postac values(9,'Gertruda Nieszczera','syrena','1795-03-28',25,default,null,11111111117);
 
-ALTER TABLE izba ADD COLUMN kolor_izby varchar(50) AFTER metraz;
+Zadanie 3
+a)Update postac set statek='pomarancza' where nazwa like '%a%'; 
+b)Update statek set max_ladownosc=max_ladownosc*0.7 where data_wodowania between 1901-01-01 and 2000-12-31;
+c)alter table postac add check (wiek<=1000);
 
-+---------------+--------------+------+-----+---------+-------+
-| Field         | Type         | Null | Key | Default | Extra |
-+---------------+--------------+------+-----+---------+-------+
-| adres_budynku | varchar(50)  | NO   | PRI | NULL    |       |
-| nazwa_izby    | varchar(50)  | NO   | PRI | NULL    |       |
-| metraz        | int unsigned | YES  |     | NULL    |       |
-| kolor_izby    | varchar(50)  | YES  |     | NULL    |       |
-| wlasciciel    | int          | YES  | MUL | NULL    |       |
-+---------------+--------------+------+-----+---------+-------+
+Zadanie 4
+a)Insert into postac values(10,'Loko',null,'1810-01-02',5,default,null,11111111118);
+b)create table marynarz like postac;
+insert into marynarz select * from postac where statek is not null;
+c)ALTER TABLE marynarz ADD FOREIGN KEY(statek) REFERENCES statek(nazwa_statku);
 
-INSERT INTO izba VALUES ('Odynow Wielkich 9','spizarnia',300,'poconacotokomuniewiempocotoowy',1);
-+-------------------+------------+--------+--------------------------------+------------+
-| adres_budynku     | nazwa_izby | metraz | kolor_izby                     | wlasciciel |
-+-------------------+------------+--------+--------------------------------+------------+
-| Odynow Wielkich 9 | spizarnia  |    300 | poconacotokomuniewiempocotoowy |          1 |
-+-------------------+------------+--------+--------------------------------+------------+
-
-ZADANIE 4
-
-CREATE TABLE przetwory (id_przetworu int PRIMARY KEY NOT NULL,
-rok_produkcji SMALLINT DEFAULT '1654',
-id_wykonawcy int ,
-zawartosc VARCHAR(50),
-dodatek VARCHAR(50) DEFAULT 'papryczka chilli',
-id_konsumenta int,
-FOREIGN KEY(id_wykonawcy) REFERENCES postac(id_postaci),
-FOREIGN KEY(id_konsumenta) REFERENCES postac(id_postaci) );
-
-+---------------+-------------+------+-----+------------------+-------+
-| Field         | Type        | Null | Key | Default          | Extra |
-+---------------+-------------+------+-----+------------------+-------+
-| id_przetworu  | int         | NO   | PRI | NULL             |       |
-| rok_produkcji | smallint    | YES  |     | 1654             |       |
-| id_wykonawcy  | int         | YES  | MUL | NULL             |       |
-| zawartosc     | varchar(50) | YES  |     | NULL             |       |
-| dodatek       | varchar(50) | YES  |     | papryczka chilli |       |
-| id_konsumenta | int         | YES  | MUL | NULL             |       |
-+---------------+-------------+------+-----+------------------+-------+
-
-
-INSERT INTO przetwory VALUES(default,default,1,'kapusta woda przyprawy',default,3)
-
-INSERT INTO postac VALUES(default,'Odyn','wiking','1997-06-06',24),
-(default,'Thor','wiking','1996-08-16',25),
-(default,'Loki','wiking','1995-01-18',26),
-(default,'Grzmot','wiking','1994-02-26',27),
-(default,'Piorun','wiking','1993-07-16',28);
-
-+------------+----------+---------+------------+------+
-| id_postaci | nazwa    | rodzaj  | data_ur    | wiek |
-+------------+----------+---------+------------+------+
-|          1 | Bjorn    | wiking  | 1998-06-06 |   23 |
-|          2 | Drozd    | ptak    | 2020-10-27 |    1 |
-|          3 | Tesciowa | kobieta | 1965-09-03 |   88 |
-|          4 | Odyn     | wiking  | 1997-06-06 |   24 |
-|          5 | Thor     | wiking  | 1996-08-16 |   25 |
-|          6 | Loki     | wiking  | 1995-01-18 |   26 |
-|          7 | Grzmot   | wiking  | 1994-02-26 |   27 |
-|          8 | Piorun   | wiking  | 1993-07-16 |   28 |
-+------------+----------+---------+------------+------+
-
-CREATE TABLE statek(nazwa_statku VARCHAR(50) PRIMARY KEY,
-rodzaj_statku ENUM('sneki','skeidy','drakary'),
-data_wodowania DATE,
-max_ladownosc int Unsigned);
-
-+----------------+----------------------------------+------+-----+---------+-------+
-| Field          | Type                             | Null | Key | Default | Extra |
-+----------------+----------------------------------+------+-----+---------+-------+
-| nazwa_statku   | varchar(50)                      | NO   | PRI | NULL    |       |
-| rodzaj_statku  | enum('sneki','skeidy','drakary') | YES  |     | NULL    |       |
-| data_wodowania | date                             | YES  |     | NULL    |       |
-| max_ladownosc  | int unsigned                     | YES  |     | NULL    |       |
-+----------------+----------------------------------+------+-----+---------+-------+
-
-INSERT INTO statek VALUES('Pomarancza','sneki','2021-10-03',300),
-('Cytryna','skeidy','2021-10-04',500);
-
-+--------------+---------------+----------------+---------------+
-| nazwa_statku | rodzaj_statku | data_wodowania | max_ladownosc |
-+--------------+---------------+----------------+---------------+
-| Cytryna      | skeidy        | 2021-10-04     |           500 |
-| Pomarancza   | sneki         | 2021-10-03     |           300 |
-+--------------+---------------+----------------+---------------+
-
-ALTER TABLE postac ADD COLUMN funkcja VARCHAR(50);
-ALTER TABLE postac ALTER funckja SET DEFAULT 'pirat';
-UPDATE postac SET funkcja=default;
-UPDATE postac SET funkcja='kapitan' WHERE id_postaci=1;
-UPDATE postac SET funkcja='papuga kapitana' WHERE id_postaci=2;
-
-
-+------------+----------+---------+------------+------+-----------------+
-| id_postaci | nazwa    | rodzaj  | data_ur    | wiek | funkcja         |
-+------------+----------+---------+------------+------+-----------------+
-|          1 | Bjorn    | wiking  | 1998-06-06 |   23 | kapitan         |
-|          2 | Drozd    | ptak    | 2020-10-27 |    1 | papuga kapitana |
-|          3 | Tesciowa | kobieta | 1965-09-03 |   88 | pirat           |
-|          4 | Odyn     | wiking  | 1997-06-06 |   24 | pirat           |
-|          5 | Thor     | wiking  | 1996-08-16 |   25 | pirat           |
-|          6 | Loki     | wiking  | 1995-01-18 |   26 | pirat           |
-|          7 | Grzmot   | wiking  | 1994-02-26 |   27 | pirat           |
-|          8 | Piorun   | wiking  | 1993-07-16 |   28 | pirat           |
-+------------+----------+---------+------------+------+-----------------+
-
-ALTER TABLE postac ADD COLUMN statek varchar(50);
-ALTER TABLE postac ADD FOREIGN KEY(statek) REFERENCES statek(nazwa_statku);
-
-Update postac set funckja=null where nazwa="Tesciowa";
-Update postac set statek="Cytryna" where rodzaj='wiking';
-Update postac set statek="Pomarancza" where rodzaj='ptak';
-Update postac set statek="Pomarancza" where nazwa='Bjorn';
-
-+------------+----------+---------+------------+------+-----------------+------------+
-| id_postaci | nazwa    | rodzaj  | data_ur    | wiek | funkcja         | statek     |
-+------------+----------+---------+------------+------+-----------------+------------+
-|          1 | Bjorn    | wiking  | 1998-06-06 |   23 | kapitan         | Pomarancza |
-|          2 | Drozd    | ptak    | 2020-10-27 |    1 | papuga kapitana | Pomarancza |
-|          3 | Tesciowa | kobieta | 1965-09-03 |   88 | NULL            | NULL       |
-|          4 | Odyn     | wiking  | 1997-06-06 |   24 | pirat           | Cytryna    |
-|          5 | Thor     | wiking  | 1996-08-16 |   25 | pirat           | Cytryna    |
-|          6 | Loki     | wiking  | 1995-01-18 |   26 | pirat           | Cytryna    |
-|          7 | Grzmot   | wiking  | 1994-02-26 |   27 | pirat           | Cytryna    |
-|          8 | Piorun   | wiking  | 1993-07-16 |   28 | pirat           | Cytryna    |
-+------------+----------+---------+------------+------+-----------------+------------+
-
-Delete from izba where nazwa_izby="spizarnia";
-Delete table izba;
-
-LAB 02
-
-ZADANIE 1
-a)DELETE FROM postac WHERE rodzaj='wiking' AND nazwa<>'Bjorn' ORDER BY data_ur ASC LIMIT 2;
-b)ALTER TABLE postac Drop PRIMARY Key;
-
-ZADANIE 2
-a) Alter table add column pesel int (11) Primary key ;
-b) alter table postac modify rodzaj enum('wiking','ptak','kobieta','syrena');
-c)Insert into postac Values (default,Gertruda Nieszczera,'syrena',1970-03-03,syrena,null)
-
-ZADANIE 3
-
-a) UPdate postac where nazwa LIKE "%a%"
+Zadanie 5
+a)UPDATE postac SET statek=default;
+DELETE FROM marynarz;
+b)DELETE FROM postac WHERE nazwa="Grzmot";
+c)DELETE FROM statek;
+d)ALTER TABLE marynarz DROP FOREIGN KEY marynarz_ibfk_1;
+ALTER TABLE postac DROP FOREIGN KEY postac_ibfk_1;
+DROP TABLE statek;
+e)CREATE TABLE zwierz (id_zwierza INT AUTO_INCREMENT PRIMARY KEY, nazwa_zwierza VARCHAR(30), wiek INT UNSIGNED);
+f)INSERT INTO zwierz VALUES(default, "Drozd",12),(default, "Loko", 5);
