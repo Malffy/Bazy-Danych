@@ -88,3 +88,35 @@ ALTER TABLE postac DROP FOREIGN KEY postac_ibfk_1;
 DROP TABLE statek;
 e)CREATE TABLE zwierz (id_zwierza INT AUTO_INCREMENT PRIMARY KEY, nazwa_zwierza VARCHAR(30), wiek INT UNSIGNED);
 f)INSERT INTO zwierz VALUES(default, "Drozd",12),(default, "Loko", 5);
+
+LAB 03
+
+Zadanie 1
+1. Create table kreatura as select * from wikingowie.kreatura;
+Create table zasob as select * from wikingowie.zasob;
+Create table ekwipunek as select * from wikingowie.ekwipunek;
+2.Select * From zasob;
+3.Select * from zasob where rodzaj='jedzenie';
+4.Select idZasobu,ilosc from ekwipunek where idKreatury in (1,3,5);
+
+Zadanie 2
+1.Select * from kreatura where rodzaj<>'wiedzma' and udzwig>=50;
+2.Select * from zasob where waga between 2 and 5;
+3.Select * from kreatura where nazwa like '%or%' and udzwig between 30 and 70;
+
+Zadanie 3
+1.Select * from zasob where Month(dataPozyskania) between 7 and 8;
+2.Select * from zasob where rodzaj is not null order by waga ASC;
+3.Select * from kreatura order by year(dataUr) DESC LIMIT 5;
+
+Zadanie 4
+1.Select distinct rodzaj from zasob;
+2.SELECT GROUP_CONCAT(nazwa," - ",rodzaj) FROM kreatura WHERE rodzaj LIKE 'wi%' GROUP BY nazwa;
+Select concat(nazwa,'-',rodzaj) from kreatura where rodzaj LIKE 'wi%';
+3.Select ilosc*waga as 'waga calkowita' from zasob where year(dataPozyskania) between 2000 and 2007;
+
+Zadanie 5
+1.Select 0.3*waga as 'odpad' from zasob where rodzaj='jedzenie';
+Select 0.7*waga as 'masa netto' from zasob where rodzaj='jedzenie';
+2.Select * from zasob where rodzaj is null;
+3.Select distinct rodzaj,nazwa from zasob where nazwa like 'Ba%' or nazwa like '%os' order by nazwa asc;
