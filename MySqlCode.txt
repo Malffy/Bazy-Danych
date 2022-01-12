@@ -165,6 +165,9 @@ inner join etapy_wyprawy ew on ew.idWyprawy = w.id_wyprawy
 inner join sektor s on s.id_sektora = ew.sektor
 where id_sektora = 7
 group by k.nazwa;
+
+Zti_Bazy 2 część 1
+
 Zadanie 1
 Select nazwisko from pracownik order by nazwisko asc;
 Zadanie 2
