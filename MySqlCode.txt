@@ -1,17 +1,17 @@
-LAB 1
+LAB 01
 
 Zadanie 1
-1)Create table postac(id_postaci int primary key auto_increment,nazwa varchar(40),rodzaj enum('wiking','ptak','kobieta'),data_ur date,wiek int unsigned);
-2)Insert into postac values(default,'Bjorn','wiking','1787-09-03',45),
+1.Create table postac(id_postaci int primary key auto_increment,nazwa varchar(40),rodzaj enum('wiking','ptak','kobieta'),data_ur date,wiek int unsigned);
+2.Insert into postac values(default,'Bjorn','wiking','1787-09-03',45),
 (default,'Tesciowa','kobieta','1747-09-03',80),
 (default,'Drozd','ptak','1797-09-03',12);
 3)Update postac set wiek='88' where nazwa='Tesciowa';
 
 Zadanie 2
-1)Create table walizka(id_walizki int auto_increment primary key,pojemnosc int unsigned,kolor enum('czerwony','teczowy','zolty','rozowy'), id_wlasciciela int);
+1.Create table walizka(id_walizki int auto_increment primary key,pojemnosc int unsigned,kolor enum('czerwony','teczowy','zolty','rozowy'), id_wlasciciela int);
 Alter table walizka add foreign key (id_wlasciciela) references postac(id_postaci);
-2)Alter table walizka alter kolor set default'rozowy';
-3)Insert into walizka values(default,30,'czerwony',1),
+2.Alter table walizka alter kolor set default'rozowy';
+3.Insert into walizka values(default,30,'czerwony',1),
 (default,'40','rozowy',2);
 
 Zadanie 3
@@ -44,7 +44,7 @@ Update postac set statek="cytryna" where id_postaci=4 or id_postaci=5 or id_post
 8.Delete from izba spizarnia;
 9.Drop table izba;
 
-LAB 2
+LAB 02
 
 Zadanie 1
 a)Delete from postac where nazwa!='Bjorn' and rodzaj='wiking' order by data_ur ASC LIMIT 2;
@@ -121,43 +121,66 @@ Select 0.7*waga as 'masa netto' from zasob where rodzaj='jedzenie';
 2.Select * from zasob where rodzaj is null;
 3.Select distinct rodzaj,nazwa from zasob where nazwa like 'Ba%' or nazwa like '%os' order by nazwa asc;
 
+LAB 04
+Zadanie 1
+1.Select avg(waga) as 'Srednia waga wikingow' from kreatura where rodzaj='wiking';
+2.Select avg(waga),count(idKreatury),rodzaj from kreatura group by rodzaj;
+3.Select avg(2021-year(dataUr)),rodzaj from kreatura group by rodzaj;
+
+Zadanie 2
+1.Select rodzaj,sum(waga) from zasob group by rodzaj;
+2.Select nazwa,avg(waga) from zasob where ilosc>=4 group by nazwa having sum(waga)>10; 
+3.Select count(nazwa),rodzaj from zasob group by rodzaj having count(nazwa)>1;
+
+Zadanie 3
+1.Select kreatura.nazwa, ekwipunek.idZasobu, ekwipunek.ilosc from kreatura,ekwipunek where kreatura.idKreatury=ekwipunek.idKreatury;
+2.Select kreatura.nazwa, zasob.nazwa, ekwipunek.ilosc from kreatura join ekwipunek on kreatura.idKreatury=ekwipunek.idKreatury join zasob on ekwipunek.idZasobu=zasob.idZasobu;
+3.Select kreatura.nazwa, kreatura.idKreatury, ekwipunek.idZasobu from kreatura left join ekwipunek on kreatura.idKreatury=ekwipunek.idKreatury where ekwipunek.idZasobu is null;
+
+Zadanie 4
+1.Select kreatura.nazwa, zasob.nazwa,ekwipunek.idZasobu from kreatura natural join ekwipunek join zasob on ekwipunek.idZasobu=zasob.idZasobu;
+2.SELECT kreatura.nazwa FROM kreatura NATURAL JOIN ekwipunek JOIN zasob ON ekwipunek.idZasobu = zasob.idZasobu WHERE zasob.rodzaj="jedzenie" ORDER BY kreatura.dataUR DESC LIMIT 5;
+3.SELECT CONCAT(t1.nazwa, "-", t2.nazwa) FROM kreatura t1, kreatura t2 WHERE t1.idKreatury - t2.idKreatury=5;
+
+Zadanie 5
+1.SELECT kreatura.rodzaj, AVG(ekwipunek.ilosc*zasob.waga) FROM kreatura NATURAL JOIN ekwipunek JOIN zasob ON ekwipunek.idZasobu=zasob.idZasobu WHERE kreatura.rodzaj NOT IN ("malpa","waz")  GROUP BY kreatura.rodzaj HAVING SUM(ekwipunek.ilosc)<30;
+2.SELECT  t.rodzaj, t.nazwa, t.dataUr FROM kreatura t,(SELECT  min(dataUr) min , max(dataUr) max FROM kreatura GROUP BY rodzaj) k WHERE k.min = t.dataUr OR k.max=t.dataUr;
+
+
 LAB 05
 
 Zadanie 1
-1.CREATE TABLE pietrzakm.kreatura SELECT * FROM wikingowie.kreatura;
-CREATE TABLE pietrzakm.uczestnicy SELECT * FROM wikingowie.uczestnicy;
-CREATE TABLE pietrzakm.etapy_wyprawy SELECT * FROM wikingowie.etapy_wyprawy;
-CREATE TABLE pietrzakm.sektor SELECT * FROM wikingowie.sektor;
-CREATE TABLE pietrzakm.wyprawa SELECT * FROM wikingowie.wyprawa;
-
-2.SELECT k.idKreatury, k.nazwa FROM kreatura k LEFT JOIN uczestnicy u ON k.idKreatury=u.id_uczestnika WHERE id_uczestnika IS NULL;
-
-3.SELECT w.nazwa, sum(e.ilosc) FROM wyprawa w 
-INNER JOIN uczestnicy u ON w.id_wyprawy = u.id_wyprawy
-INNER JOIN ekwipunek e ON e.idKreatury = u.id_uczestnika
-GROUP BY w.nazwa;
+1. Create table pietrzakm.kreatura select * from wikingowie.kreatura ;
+Create table pietrzakm.uczestnicy select * from wikingowie.uczestnicy ;
+Create table pietrzakm.etapy_wyprawy select * from wikingowie.etapy_wyprawy;
+Create table pietrzakm.sektor select * from wikingowie.sektor;
+Create table pietrzakm.wyprawa select * from wikingowie.wyprawa;
+2.Select idkreatury,nazwa from kreatura left join uczestnicy on kreatura.idKreatury=uczestnicy.id_uczestnika where uczestnicy.id_uczestnika is null;
+3.Select wyprawa.nazwa, sum(ekwipunek.ilosc) from wyprawa inner join uczestnicy on wyprawa.id_wyprawy=uczestnicy.id_wyprawy inner join ekwipunek on ekwipunek.idKreatury=uczestnicy.id_uczestnika group by wyprawa.nazwa;
 
 Zadanie 2
+1.Select wyprawa.nazwa, count(uczestnicy.id_uczestnika), GROUP_concat(kreatura.nazwa) from wyprawa inner join uczestnicy on wyprawa.id_wyprawy=uczestnicy.id_wyprawy inner join kreatura on uczestnicy.id_uczestnika=kreatura.idKreatury group by wyprawa.nazwa;
+2.Select etapy_wyprawy.idEtapu, etapy_wyprawy.sektor from etapy_wyprawy inner join wyprawa on wyprawa.id_wyprawy= etapy_wyprawy.idWyprawy order by date(wyprawa.data_rozpoczecia), DESC;
 
-1.select w.nazwa, count(distinct u.id_uczestnika) as 'liczba uczestnikow', group_concat(distinct k.nazwa separator' | ') from wyprawa w
-inner join uczestnicy u on w.id_wyprawy=u.id_wyprawy
-inner join kreatura k on u.id_uczestnika=k.idKreatury
-group by w.nazwa;
+Zadanie 3
+1.
+2. SELECT  kreatura.nazwa, IF (uczestnicy.id_uczestnika>0,"bral udzial w wyprawie","nie bral udzialu w wyprawie"), 
+IFNULL(wyprawa.nazwa,"") FROM kreatura LEFT JOIN uczestnicy ON kreatura.idKreatury=uczestnicy.id_uczestnika 
+LEFT JOIN wyprawa ON uczestnicy.id_wyprawy=wyprawa.id_wyprawy;
 
 Zadanie 4
 
-1.select w.nazwa, sum(length(ew.dziennik)) from wyprawa w 
-inner join etapy_wyprawy ew on w.id_wyprawy = ew.idwyprawy 
-group by w.nazwa having sum(length(ew.dziennik)) < 400;
+1.Select w.nazwa,sum(lenght(ew.dziennik)) from wyprawa w
+inner join etapy_wyprawy ew on w.id_wyprawy =ew.idwyprawy
+group by w.nazwa having sum(lenght(ew.dziennik))<400;
 
 2.select u.id_wyprawy, sum(z.waga*e.ilosc)/count(distinct u.id_uczestnika) from uczestnicy u
 left join ekwipunek e on e.idkreatury = u.id_uczestnika
 left join zasob z on z.idzasobu = e.idzasobu
 group by u.id_wyprawy;
 
-Zadanie 5
-
-1.select k.nazwa, day(curdate()) - day(k.dataUr) - (day(curdate() - day(w.data_rozpoczecia)))
+Zadnie 5
+select k.nazwa, day(curdate()) - day(k.dataUr) - (day(curdate() - day(w.data_rozpoczecia)))
 from uczestnicy u
 inner join uczestnicy u on k.idkreatury = u.id_uczestnika
 inner join wyprawa w on w.id_wyprawy = u.id_wyprawy
