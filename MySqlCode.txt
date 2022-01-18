@@ -217,3 +217,77 @@ Zadanie 12
 Create table pietrzakm.pracownik_50_plus like pracownik;
 Insert into pietrzakm.pracownik_50_plus select * from pracownik where 2021-year(data_urodzenia)>=50;
 
+Zti_bazy 2 cześć 2
+
+Zadanie 1
+Select p.imie,p.nazwisko,d.nazwa from pracownik p
+inner join dzial d on p.dzial=id_dzialu ; 
+
+Zadanie 2
+Select t.nazwa_towaru,k.nazwa_kategori,sum(pz.ilosc) from pozycja_zamowienia pz
+inner join towar t on pz.towar=t.id_towaru
+inner join kategoria k on t.kategoria=k.id_kategori group by id_towaru order by sum(pz.ilosc) desc;
+
+Zadanie 3 
+Select z.id_zamowienia,sz.nazwa_statusu_zamowienia from zamowienie z 
+inner join status_zamowienia sz on z.status_zamowienia=sz.id_statusu_zamowienia where sz.nazwa_statusu_zamowienia="anulowane" ;
+
+Zadanie 4
+Select k.id_klienta,ak.miejscowosc,ta.nazwa from typ_adresu ta
+inner join adres_klienta ak on ta.id_typu=ak.typ_adresu
+inner join klient k on ak.klient=k.id_klienta where ak.miejscowosc="Olsztyn" and ta.nazwa="podstawowy";
+
+Zadanie 5
+Select jm.nazwa from jednostka_miary jm
+left join stan_magazynowy sm on jm.id_jednostki=sm.jm where sm.jm is null;
+
+Zadanie 6
+Select z.numer_zamowienia,t.nazwa_towaru,pz.ilosc,pz.cena from  zamowienie z
+inner join pozycja_zamowienia pz on pz.zamowienie=z.id_zamowienia
+inner join towar t on pz.towar=t.id_towaru where year(z.data_zamowienia)="2018";
+
+Zadanie 7
+create table towary_full_info as select t.nazwa_towaru, t.cena_zakupu, k.nazwa_kategori, sm.ilosc, jmi.nazwa from __firma_zti.kategoria k
+inner join __firma_zti.towar t on k.id_kategori=t.kategoria 
+join __firma_zti.stan_magazynowy sm on t.id_towaru=sm.towar 
+join __firma_zti.jednostka_miary jmi on sm.jm=jmi.id_jednostki;
+
+Zadanie 8
+Select pz.id_pozycji,z.data_zamowienia from pozycja_zamowienia pz
+inner join zamowienie z on pz.zamowienie=z.id_zamowienia order by z.data_zamowienia desc limit 5;
+
+Zadanie 9
+Select z.id_zamowienia,sz.nazwa_statusu_zamowienia from zamowienie z
+inner join status_zamowienia sz on z.status_zamowienia=sz.id_statusu_zamowienia where sz.nazwa_statusu_zamowienia NOT LIKE "zrealizowane";
+
+Zadanie 10 
+Select id_adresu,kod from adres_klienta where kod not like "__-___";
+
+Zti_bazy 3 część 2
+
+Zadanie 1
+Select d.nazwa, min(p.pensja), max(p.pensja),avg(p.pensja) from dzial d
+inner join pracownik p on p.dzial=d.id_dzialu group by d.id_dzialu;
+
+Zadanie 2
+Select k.pelna_nazwa, sum(pz.ilosc*pz.cena) from klient k
+inner join zamowienie z on k.id_klienta=z.klient
+inner join pozycja_zamowienia pz on z.id_zamowienia=pz.zamowienie group by id_pozycji order by sum(pz.ilosc*pz.cena) DESC LIMIT 10 ;
+
+Zadanie 3
+Select year(z.data_zamowienia),sum(pz.ilosc*pz.cena) from zamowienie z
+inner join pozycja_zamowienia pz on z.id_zamowienia=pz.zamowienie group by year(z.data_zamowienia) order by sum(pz.ilosc*pz.cena) desc;
+
+Zadanie 4
+Select sum(pz.ilosc*pz.cena) from pozycja_zamowienia pz
+inner join zamowienie z on z.id_zamowienia=pz.zamowienie
+inner join status_zamowienia st on st.id_statusu_zamowienia=z.status_zamowienia where st.nazwa_statusu_zamowienia="anulowane";
+
+Zadanie 5
+Select ak.miejscowosc,count(distinct(pz.zamowienie)), sum(pz.ilosc*pz.cena) from pozycja_zamowienia pz
+inner join zamowienie z on z.id_zamowienia=pz.zamowienie
+inner join klient k on z.klient=k.id_klienta 
+inner join adres_klienta ak on k.id_klienta=ak.klient
+inner join typ_adresu ta on  ak.typ_adresu=ta.id_typu where ta.nazwa="podstawowy" group by ak.miejscowosc order by count(distinct(pz.zamowienie)) desc ;
+
+
